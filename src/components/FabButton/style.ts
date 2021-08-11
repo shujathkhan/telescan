@@ -4,7 +4,6 @@ export const styles = StyleSheet.create({
   fabButton: {
     backgroundColor: 'lime',
     padding: 15,
-    transform: [{ rotateZ: '90deg' }],
     borderRadius: 100,
     elevation: 3,
     justifyContent: 'flex-end',
@@ -15,7 +14,7 @@ export const styles = StyleSheet.create({
   fabText: {
     fontSize: 20,
   },
-  fabSaveButton: {
-    transform: [],
+  fabPencilButton: {
+    transform: [{ rotateZ: '90deg' }],
   },
 });

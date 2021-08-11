@@ -102,6 +102,7 @@ const ContactView = (props: TContactView) => {
                 style={styles.detailsTextInput}
                 onChangeText={value => handleChangeText(value, 'phoneNumbers', phoneIndex, 'number')}
                 value={phoneNumber.number}
+                keyboardType="numeric"
               />
             </View>
           );
@@ -120,6 +121,7 @@ const ContactView = (props: TContactView) => {
                 style={styles.detailsTextInput}
                 onChangeText={value => handleChangeText(value, 'emailAddresses', emailIndex, 'email')}
                 value={emailAddress.email}
+                keyboardType="email-address"
               />
             </View>
           );

@@ -16,12 +16,13 @@ const FabButton = (props: TFabButton) => {
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.75}
-      style={[styles.fabButton, (type === 'save' || type === 'add') && styles.fabSaveButton]}
-      onPress={handlePress}>
+    <TouchableOpacity activeOpacity={0.75} style={styles.fabButton} onPress={handlePress}>
       {type === 'edit' ? (
-        <Text style={styles.fabText}>{isActive ? '❌' : '✏️'}</Text>
+        isActive ? (
+          <Text style={styles.fabText}>💾</Text>
+        ) : (
+          <Text style={[styles.fabText, styles.fabPencilButton]}>✏️</Text>
+        )
       ) : type === 'add' ? (
         <Text style={styles.fabText}>➕</Text>
       ) : (

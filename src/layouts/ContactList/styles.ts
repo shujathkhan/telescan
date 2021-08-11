@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   fabView: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 60,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',

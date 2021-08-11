@@ -1,3 +1,5 @@
+import { Contact } from 'react-native-contacts';
+
 export const getInitials = (name: string) => {
   let initials: string | Array<string> = name.split(' ');
   if (initials.length > 1) {
@@ -11,3 +13,10 @@ export const getInitials = (name: string) => {
 export const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
+
+export const sortByGivenName = (contactList: Array<Contact>) =>
+  contactList
+    .slice()
+    .sort((a, b) =>
+      a.givenName.toLowerCase() > b.givenName.toLowerCase() ? 1 : a.givenName.toLowerCase() < b.givenName.toLowerCase() ? -1 : 0,
+    );

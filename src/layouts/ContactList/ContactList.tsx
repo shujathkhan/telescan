@@ -6,7 +6,7 @@ import Contacts, { Contact } from 'react-native-contacts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ContactCard from '../../components/ContactCard';
 import FabButton from '../../components/FabButton';
-import { wait } from '../../helpers';
+import { sortByGivenName, wait } from '../../helpers';
 import { styles } from './styles';
 // import Tissue from '../../assets/Tissue.gif';
 
@@ -100,9 +100,10 @@ const ContactList = (props: TContactList) => {
       </View>
       {contactList.length ? (
         <FlatList
-          data={contactList.slice().sort((a, b) => (a.givenName > b.givenName ? 1 : a.givenName < b.givenName ? -1 : 0))}
+          data={sortByGivenName(contactList)}
           extraData={contactList}
           renderItem={contactItem}
+          initialNumToRender={10}
           keyExtractor={item => item.recordID}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         />
