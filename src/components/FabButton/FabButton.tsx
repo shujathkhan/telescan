@@ -4,11 +4,12 @@ import { styles } from './style';
 
 type TFabButton = {
   onPress: () => void;
-  isActive: boolean;
+  type: 'add' | 'edit' | 'save';
+  isActive?: boolean;
 };
 
 const FabButton = (props: TFabButton) => {
-  const { onPress, isActive } = props;
+  const { onPress, isActive, type } = props;
 
   const handlePress = () => {
     onPress && onPress();
@@ -17,9 +18,15 @@ const FabButton = (props: TFabButton) => {
   return (
     <TouchableOpacity
       activeOpacity={0.75}
-      style={styles.fabButton}
+      style={[styles.fabButton, (type === 'save' || type === 'add') && styles.fabSaveButton]}
       onPress={handlePress}>
-      <Text style={styles.fabText}>{isActive ? '❌' : '✏️'}</Text>
+      {type === 'edit' ? (
+        <Text style={styles.fabText}>{isActive ? '❌' : '✏️'}</Text>
+      ) : type === 'add' ? (
+        <Text style={styles.fabText}>➕</Text>
+      ) : (
+        <Text style={styles.fabText}>💾</Text>
+      )}
     </TouchableOpacity>
   );
 };

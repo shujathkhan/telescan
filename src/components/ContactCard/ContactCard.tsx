@@ -18,10 +18,7 @@ const ContactCard = (props: TContactCard) => {
   let nameInitials: string | Array<string> = getInitials(name);
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      activeOpacity={0.7}
-      onPress={handlePress}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.7} onPress={handlePress}>
       {nameIconPath ? (
         <Image
           style={styles.nameIcon}
