@@ -1,18 +1,24 @@
+import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Platform } from 'react-native';
+import { FlatList, Platform, Text, View } from 'react-native';
 import { PermissionsAndroid } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ContactCard from '../../components/ContactCard';
 import { styles } from './styles';
+// import Tissue from '../../assets/Tissue.gif';
 
-const ContactList = () => {
+type TContactList = {
+  navigation: NativeStackNavigationHelpers;
+};
+
+const ContactList = (props: TContactList) => {
   const [contactList, setContactList] = useState<Array<Contact>>([]);
   const loadContacts = () => {
     Contacts.getAll()
       .then(contacts => {
         setContactList(contacts);
-        console.log(contacts[2]);
+        console.log(contacts[0]);
       })
       .catch(err => {
         console.log(err);
@@ -41,26 +47,36 @@ const ContactList = () => {
     }
   }, []);
 
-  const contactItem = (props: { item: any; index: number }) => {
-    return (
-      props.item.displayName &&
-      props.item.displayName !== 'undefined' && (
-        <ContactCard
-          name={props.item.displayName}
-          nameIconPath={props.item.thumbnailPath}
-          key={props.item.recordID}
-        />
-      )
-    );
+  const contactItem = (childProps: { item: Contact; index: number }) => {
+    return childProps.item.displayName &&
+      childProps.item.displayName !== 'undefined' ? (
+      <ContactCard
+        name={childProps.item.displayName}
+        nameIconPath={childProps.item.thumbnailPath}
+        onPress={() =>
+          props.navigation.navigate('ContactView', {
+            contactId: childProps.item.recordID,
+          })
+        }
+        key={childProps.item.recordID}
+      />
+    ) : null;
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={contactList}
-        renderItem={contactItem}
-        keyExtractor={item => item.recordID}
-      />
+      {contactList.length ? (
+        <FlatList
+          data={contactList}
+          renderItem={contactItem}
+          keyExtractor={item => item.recordID}
+        />
+      ) : (
+        <View style={styles.fallbackStatusView}>
+          {/* <Image source={Tissue} /> */}
+          <Text style={styles.fallbackStatusText}>No contacts to display</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
