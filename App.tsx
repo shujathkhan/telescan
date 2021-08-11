@@ -5,8 +5,10 @@ import ContactList from './src/layouts/ContactList';
 import ContactView from './src/layouts/ContactView';
 
 export type RootStackParamList = {
-  ContactList: undefined;
-  ContactView: { contactId: string };
+  'All Contacts': undefined;
+  'View/Edit Contact': {
+    contactId?: string;
+  };
 };
 
 const App = () => {
@@ -15,8 +17,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="ContactList" component={ContactList} />
-        <Stack.Screen name="ContactView" component={ContactView} />
+        <Stack.Screen name="All Contacts" component={ContactList} />
+        <Stack.Screen name="View/Edit Contact" component={ContactView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

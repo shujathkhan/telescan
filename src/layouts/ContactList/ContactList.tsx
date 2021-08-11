@@ -54,7 +54,7 @@ const ContactList = (props: TContactList) => {
         name={childProps.item.displayName}
         nameIconPath={childProps.item.thumbnailPath}
         onPress={() =>
-          props.navigation.navigate('ContactView', {
+          props.navigation.navigate('View/Edit Contact', {
             contactId: childProps.item.recordID,
           })
         }

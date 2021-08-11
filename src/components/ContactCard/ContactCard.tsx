@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { getInitials } from '../../helpers';
 import { styles } from './styles';
 
 type TContactCard = {
@@ -13,12 +14,9 @@ const ContactCard = (props: TContactCard) => {
   const handlePress = () => {
     onPress && onPress();
   };
-  let nameInitials: string | Array<string> = name.split(' ');
-  if (nameInitials.length > 1) {
-    nameInitials =
-      nameInitials[0][0].toUpperCase() +
-      nameInitials[nameInitials.length - 1][0].toUpperCase();
-  }
+
+  let nameInitials: string | Array<string> = getInitials(name);
+
   return (
     <TouchableOpacity
       style={styles.container}
