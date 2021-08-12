@@ -184,7 +184,7 @@ const ContactView = (props: TContactView) => {
         {contact.phoneNumbers.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
           const label = phoneNumber.label.slice(0, 1).toUpperCase() + phoneNumber.label.slice(1);
           return !editMode ? (
-            <View style={styles.emojiContainer}>
+            <View style={styles.emojiContainer} key={`phoneNumber-${phoneIndex}-emojiContainer`}>
               <View style={styles.emoji}>
                 <Text style={styles.detailsTextLabel}>📞</Text>
               </View>
@@ -194,7 +194,7 @@ const ContactView = (props: TContactView) => {
               </View>
             </View>
           ) : (
-            <View style={styles.emojiContainer}>
+            <View style={styles.emojiContainer} key={`phoneNumber-${phoneIndex}-emojiContainer`}>
               <View style={styles.emoji}>
                 <Text style={styles.detailsTextLabel}>📞</Text>
               </View>
@@ -223,7 +223,7 @@ const ContactView = (props: TContactView) => {
         {contact.emailAddresses.map((emailAddress: EmailAddress, emailIndex: number) => {
           const label = emailAddress.label.slice(0, 1).toUpperCase() + emailAddress.label.slice(1);
           return !editMode ? (
-            <View style={styles.emojiContainer}>
+            <View style={styles.emojiContainer} key={`emailAddress-${emailIndex}-emojiContainer`}>
               <View style={styles.emoji}>
                 <Text style={styles.detailsTextLabel}>✉️</Text>
               </View>
@@ -233,7 +233,7 @@ const ContactView = (props: TContactView) => {
               </View>
             </View>
           ) : (
-            <View style={styles.emojiContainer}>
+            <View style={styles.emojiContainer} key={`emailAddress-${emailIndex}-emojiContainer`}>
               <View style={styles.emoji}>
                 <Text style={styles.detailsTextLabel}>✉️</Text>
               </View>

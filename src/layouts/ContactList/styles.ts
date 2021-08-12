@@ -47,4 +47,19 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  deleteView: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingHorizontal: 30,
+    marginHorizontal: 7.5,
+    paddingVertical: 5,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  deleteText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '600',
+  },
 });

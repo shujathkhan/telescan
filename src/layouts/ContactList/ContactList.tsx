@@ -1,6 +1,6 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, Text, View, Image, SafeAreaView } from 'react-native';
+import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
 import { contactPermissions, requestPermissions, sortByGivenName, wait } from '../../helpers';
@@ -8,6 +8,7 @@ import ContactCard from '../../components/ContactCard';
 import FabButton from '../../components/FabButton';
 import { styles } from './styles';
 import Snackbar from 'react-native-snackbar';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 type TContactList = {
   navigation: NativeStackNavigationHelpers;
@@ -59,18 +60,49 @@ const ContactList = (props: TContactList) => {
     fetchData();
   }, []);
 
+  const handleDelete = (childProps: { item: Contact; index: number }) => {
+    const contactName = childProps.item.displayName;
+    Contacts.deleteContact(childProps.item)
+      .then(() => {
+        loadContacts();
+        Snackbar.show({
+          text: `Successfully deleted ${contactName} ✔️`,
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: '#29BB89',
+          textColor: 'white',
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        Snackbar.show({
+          text: 'Oops, we have a situation! 🚧',
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: 'red',
+          textColor: 'white',
+        });
+      });
+  };
+
   const contactItem = (childProps: { item: Contact; index: number }) => {
+    const handleRightSwipe = () => (
+      <TouchableOpacity style={styles.deleteView} activeOpacity={0.75} onPress={() => handleDelete(childProps)}>
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
+    );
+
     return childProps.item.displayName && childProps.item.displayName !== 'undefined' ? (
-      <ContactCard
-        name={childProps.item.displayName}
-        nameIconPath={childProps.item.thumbnailPath}
-        onPress={() =>
-          props.navigation.navigate('View/Edit Contact', {
-            contactId: childProps.item.recordID,
-          })
-        }
-        key={childProps.item.recordID}
-      />
+      <Swipeable renderRightActions={handleRightSwipe} onSwipeableLeftOpen={() => console.log('Swiped')}>
+        <ContactCard
+          name={childProps.item.displayName}
+          nameIconPath={childProps.item.thumbnailPath}
+          onPress={() =>
+            props.navigation.navigate('View/Edit Contact', {
+              contactId: childProps.item.recordID,
+            })
+          }
+          key={childProps.item.recordID}
+        />
+      </Swipeable>
     ) : null;
   };
 
@@ -84,11 +116,6 @@ const ContactList = (props: TContactList) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Showing {contactList.length} contacts</Text>
-        {/* <View style={styles.typeOfView}>
-          <Text>😀</Text>
-          <View style={styles.separator} />
-          <Text>📃</Text>
-        </View> */}
       </View>
 
       <View style={styles.fabView}>
