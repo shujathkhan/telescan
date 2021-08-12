@@ -16,9 +16,11 @@ type TNewContact = {
 };
 
 const NewContact = (props: TNewContact) => {
+  const newPhoneNumber = { label: 'home', number: '' };
+  const newEmailAddress = { label: 'home', email: '' };
   const newContact = {
-    emailAddresses: [{ label: '', email: '' }],
-    phoneNumbers: [{ label: '', number: '' }],
+    emailAddresses: [newEmailAddress],
+    phoneNumbers: [newPhoneNumber],
     givenName: '',
     familyName: '',
   };
@@ -32,7 +34,6 @@ const NewContact = (props: TNewContact) => {
       } else {
         contactClone[type] = value;
       }
-
       setContact(contactClone);
     }
   };
@@ -74,24 +75,41 @@ const NewContact = (props: TNewContact) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={contactViewStyles.detailsView}>
-          <Text style={contactViewStyles.detailsTextLabel}>Given name</Text>
-          <TextInput
-            style={contactViewStyles.detailsTextInput}
-            value={contact.givenName}
-            onChangeText={value => handleChangeText(value, 'givenName')}
-          />
+        <View style={contactViewStyles.emojiContainer}>
+          <View style={contactViewStyles.emoji}>
+            <Text style={contactViewStyles.detailsTextLabel}>😀</Text>
+          </View>
+          <View style={contactViewStyles.detailsView}>
+            <Text style={contactViewStyles.detailsTextLabel}>Given name</Text>
+            <TextInput
+              style={contactViewStyles.detailsTextInput}
+              value={contact.givenName}
+              onChangeText={value => handleChangeText(value, 'givenName')}
+            />
+          </View>
         </View>
-        <View style={contactViewStyles.detailsView}>
-          <Text style={contactViewStyles.detailsTextLabel}>Family name</Text>
-          <TextInput
-            style={contactViewStyles.detailsTextInput}
-            value={contact.familyName}
-            onChangeText={value => handleChangeText(value, 'familyName')}
-          />
+
+        <View style={contactViewStyles.emojiContainer}>
+          <View style={contactViewStyles.emoji}>
+            <Text style={contactViewStyles.detailsTextLabel}>😀</Text>
+          </View>
+          <View style={contactViewStyles.detailsView}>
+            <Text style={contactViewStyles.detailsTextLabel}>Family name</Text>
+            <TextInput
+              style={contactViewStyles.detailsTextInput}
+              value={contact.familyName}
+              onChangeText={value => handleChangeText(value, 'familyName')}
+            />
+          </View>
         </View>
+
         <View style={styles.groupContainer}>
-          <Text style={contactViewStyles.detailsTextLabel}>Phone Numbers</Text>
+          <View style={contactViewStyles.emojiContainer}>
+            <View style={contactViewStyles.emoji}>
+              <Text style={contactViewStyles.detailsTextLabel}>📞</Text>
+            </View>
+            <Text style={contactViewStyles.detailsTextLabel}>Phone Numbers</Text>
+          </View>
           {contact?.phoneNumbers?.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
             return (
               <View
@@ -134,14 +152,19 @@ const NewContact = (props: TNewContact) => {
             activeOpacity={0.75}
             onPress={() => {
               let contactClone = cloneDeep(contact);
-              contactClone.phoneNumbers?.push({ number: '', label: '' });
+              contactClone.phoneNumbers?.push(newPhoneNumber);
               setContact(contactClone);
             }}>
             <Text>➕Add New Phone Number</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.groupContainer}>
-          <Text style={contactViewStyles.detailsTextLabel}>Email Addresses</Text>
+          <View style={contactViewStyles.emojiContainer}>
+            <View style={contactViewStyles.emoji}>
+              <Text style={contactViewStyles.detailsTextLabel}>✉️</Text>
+            </View>
+            <Text style={contactViewStyles.detailsTextLabel}>Email Addresses</Text>
+          </View>
           {contact?.emailAddresses?.map((emailAddress: EmailAddress, emailIndex: number) => {
             return (
               <View
@@ -153,7 +176,7 @@ const NewContact = (props: TNewContact) => {
                   mode={'dropdown'}
                   dropdownIconColor={'black'}
                   onValueChange={(itemValue: ItemValue) => handleChangeText(itemValue, 'emailAddresses', emailIndex, 'label')}>
-                  <Picker.Item label="Personal" value="personal" style={styles.pickerItem} />
+                  <Picker.Item label="Home" value="home" style={styles.pickerItem} />
                   <Picker.Item label="Work" value="work" style={styles.pickerItem} />
                   <Picker.Item label="Other" value="other" style={styles.pickerItem} />
                 </Picker>
@@ -183,7 +206,7 @@ const NewContact = (props: TNewContact) => {
             activeOpacity={0.75}
             onPress={() => {
               let contactClone = cloneDeep(contact);
-              contactClone.emailAddresses?.push({ email: '', label: '' });
+              contactClone.emailAddresses?.push(newEmailAddress);
               setContact(contactClone);
             }}>
             <Text>➕Add New Email Address</Text>

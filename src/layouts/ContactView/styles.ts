@@ -69,4 +69,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  emojiContainer: { flexDirection: 'row', alignItems: 'baseline' },
+  emoji: { marginRight: 10 },
 });
