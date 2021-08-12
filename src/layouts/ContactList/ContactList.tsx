@@ -1,14 +1,13 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Platform, RefreshControl, Text, View } from 'react-native';
-import { PermissionsAndroid } from 'react-native';
+import { FlatList, RefreshControl, Text, View, Image, SafeAreaView } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { contactPermissions, requestPermissions, wait } from '../../helpers';
 import ContactCard from '../../components/ContactCard';
 import FabButton from '../../components/FabButton';
-import { sortByGivenName, wait } from '../../helpers';
 import { styles } from './styles';
-// import Tissue from '../../assets/Tissue.gif';
+import Snackbar from 'react-native-snackbar';
 
 type TContactList = {
   navigation: NativeStackNavigationHelpers;
@@ -22,39 +21,41 @@ const ContactList = (props: TContactList) => {
     Contacts.getAll()
       .then(contacts => {
         setContactList(contacts);
+        Snackbar.show({
+          text: `Successfully loaded ${contacts.length} contacts 💯`,
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: '#29BB89',
+          textColor: 'white',
+        });
       })
       .catch(err => {
         setContactList([]);
-        console.log(err);
+        console.error(err);
+        Snackbar.show({
+          text: 'Oops, we have a situation! 🚧',
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: 'red',
+          textColor: 'white',
+        });
       });
   };
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-        title: 'TeleScan',
-        message: 'We would like to request your permission to sync your in-device contacts.',
-        buttonPositive: 'Alright 👍',
-      })
-        .then(authStatus => {
-          if (authStatus === 'granted') {
-            loadContacts();
-          } else {
-            setContactList([]);
-          }
-        })
-        .catch(err => {
-          setContactList([]);
-          console.log(err);
+    async function fetchData() {
+      const isPermissionGranted = await requestPermissions(contactPermissions);
+      if (isPermissionGranted) {
+        loadContacts();
+      } else {
+        setContactList([]);
+        Snackbar.show({
+          text: 'Well, feel free to explore 👍',
+          duration: Snackbar.LENGTH_SHORT,
+          backgroundColor: '#185ADB',
+          textColor: 'white',
         });
-    } else {
-      Contacts.requestPermission();
-      Contacts.checkPermission()
-        .then(() => {
-          loadContacts();
-        })
-        .catch(err => console.log(err));
+      }
     }
+    fetchData();
   }, []);
 
   const contactItem = (childProps: { item: Contact; index: number }) => {
@@ -82,11 +83,11 @@ const ContactList = (props: TContactList) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Showing {contactList.length} contacts</Text>
-        <View style={styles.typeOfView}>
+        {/* <View style={styles.typeOfView}>
           <Text>😀</Text>
           <View style={styles.separator} />
           <Text>📃</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.fabView}>
@@ -94,14 +95,12 @@ const ContactList = (props: TContactList) => {
           type="add"
           onPress={() => {
             props.navigation.navigate('Add New Contact');
-            console.log('aa');
           }}
         />
       </View>
       {contactList.length ? (
         <FlatList
-          data={sortByGivenName(contactList)}
-          extraData={contactList}
+          data={contactList}
           renderItem={contactItem}
           initialNumToRender={10}
           keyExtractor={item => item.recordID}
@@ -109,8 +108,10 @@ const ContactList = (props: TContactList) => {
         />
       ) : (
         <View style={styles.fallbackStatusView}>
-          {/* <Image source={Tissue} /> */}
-          <Text style={styles.fallbackStatusText}>No contacts to display</Text>
+          <Image source={require('../../assets/blank.png')} />
+          <View style={styles.fallbackStatusTextView}>
+            <Text style={styles.fallbackStatusText}>No contacts to display</Text>
+          </View>
         </View>
       )}
     </SafeAreaView>

@@ -18,7 +18,10 @@ export const styles = StyleSheet.create({
   },
   nameInitialsView: {
     borderRadius: 50,
-    padding: 10,
+    width: 45,
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: `rgb(0, 0, ${Math.floor(Math.random() * 256)} )`,
     marginEnd: 15,
   },
@@ -29,5 +32,5 @@ export const styles = StyleSheet.create({
     width: 'auto',
     maxWidth: '80%',
   },
-  nameText: { fontSize: 25, width: '100%', overflow: 'hidden' },
+  nameText: { fontSize: 20, width: '100%', overflow: 'hidden' },
 });

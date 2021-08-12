@@ -2,14 +2,16 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   fabButton: {
-    backgroundColor: 'lime',
-    padding: 15,
+    backgroundColor: '#FFEACA',
+    width: 50,
+    height: 50,
     borderRadius: 100,
     elevation: 3,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 25,
     zIndex: 999,
+    borderWidth: 2,
   },
   fabText: {
     fontSize: 20,
@@ -17,4 +19,5 @@ export const styles = StyleSheet.create({
   fabPencilButton: {
     transform: [{ rotateZ: '90deg' }],
   },
+  fabImage: { width: 20, height: 20 },
 });

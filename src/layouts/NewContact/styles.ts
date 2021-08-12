@@ -1,20 +1,32 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingTop: 30,
+    paddingHorizontal: '7.5%',
+    backgroundColor: '#FFFBDF',
+    width: '100%',
+  },
   groupContainer: {
-    marginTop: 25,
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    marginTop: 20,
   },
   itemContainer: {
     flexDirection: 'row',
-    width: '100%',
   },
   pickerContainer: {
-    marginLeft: -7.5,
+    marginLeft: '-5%',
     height: 50,
-    width: Dimensions.get('screen').width - 265,
+    width: '50%',
   },
-  customTextInput: { width: '60%', borderBottomWidth: 0.75 },
+  pickerItem: { backgroundColor: '#FFFBDF', color: 'black' },
+  customTextInput: { width: '120%', borderBottomWidth: 0.75, marginTop: -40, marginStart: -25 },
   customFabView: {
-    right: -30,
+    right: '0%',
   },
 });

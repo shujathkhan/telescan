@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: '#FFFBDF',
     minHeight: 70,
   },
   fallbackStatusView: {
@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
   fallbackStatusText: {
     fontSize: 15,
   },
+  fallbackStatusTextView: { marginVertical: 20 },
   infoContainer: {
     padding: 10,
     flexDirection: 'row',
@@ -41,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   fabView: {
     position: 'absolute',
-    bottom: 60,
+    bottom: '7%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',

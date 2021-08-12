@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingVertical: 30,
+    backgroundColor: '#FFFBDF',
   },
   nameIcon: {
     width: 150,
@@ -15,13 +16,16 @@ export const styles = StyleSheet.create({
   },
   nameInitialsView: {
     borderRadius: 100,
-    padding: 45,
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: `rgb(0,0 , ${Math.floor(Math.random() * 256)} )`,
     marginEnd: 15,
   },
   nameInitialsText: { fontSize: 50, color: 'white' },
   detailsContainer: {
-    marginVertical: 50,
+    marginVertical: 30,
     width: '85%',
     marginBottom: 0,
   },
@@ -32,13 +36,14 @@ export const styles = StyleSheet.create({
   },
   detailsTextValue: { fontSize: 25 },
   detailsTextInput: {
-    fontSize: 25,
+    fontSize: 15,
     height: 50,
     width: Dimensions.get('screen').width - 65,
     borderBottomWidth: 0.75,
     paddingBottom: 2,
     paddingLeft: 0,
     marginTop: -10,
+    color: 'black',
   },
   fabView: {
     position: 'absolute',
@@ -46,5 +51,22 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
+  },
+  editPhotoContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '-4%',
+    marginTop: 10,
+  },
+  editPhotoButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editPhotoButton: {
+    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

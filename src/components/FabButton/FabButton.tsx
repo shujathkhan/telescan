@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Image, Text, TouchableOpacity } from 'react-native';
 import { styles } from './style';
 
 type TFabButton = {
@@ -24,7 +24,7 @@ const FabButton = (props: TFabButton) => {
           <Text style={[styles.fabText, styles.fabPencilButton]}>✏️</Text>
         )
       ) : type === 'add' ? (
-        <Text style={styles.fabText}>➕</Text>
+        <Image source={require('../../assets/add.png')} style={styles.fabImage} />
       ) : (
         <Text style={styles.fabText}>💾</Text>
       )}
