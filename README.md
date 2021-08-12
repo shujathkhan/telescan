@@ -9,7 +9,7 @@
   <tr>
   <td>
   
-  TeleScan is a quick prototype experience built using react-native, typescript, react-native-contacts, react-native-image-picker, react-native-permissions, prettier, detox and react-navigation, which has maximum support for Android for now.
+  TeleScan is a quick prototype contact manager experience built using react-native, typescript, react-native-contacts, react-native-image-picker, react-native-permissions, prettier, detox and react-navigation, which has maximum support for Android for now.
   
   It leverages <b>react-native-contacts</b> to sync and modify in-device contacts. Currently it supports the following, 
   <ul>
