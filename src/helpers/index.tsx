@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import { Contact } from 'react-native-contacts';
 import { Permission, PERMISSIONS, requestMultiple, RESULTS } from 'react-native-permissions';
 
 export const getInitials = (name: string) => {
@@ -28,6 +29,13 @@ export const requestPermissions = async (permissions: Array<Permission>) => {
   }
   return isPermissionGranted;
 };
+
+export const sortByGivenName = (contactList: Array<Contact>) =>
+  contactList
+    .slice()
+    .sort((a, b) =>
+      a.givenName.toLowerCase() > b.givenName.toLowerCase() ? 1 : a.givenName.toLowerCase() < b.givenName.toLowerCase() ? -1 : 0,
+    );
 
 export const contactPermissions: Array<Permission> =
   Platform.OS === 'ios'

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, Text, View, Image, SafeAreaView } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
-import { contactPermissions, requestPermissions, wait } from '../../helpers';
+import { contactPermissions, requestPermissions, sortByGivenName, wait } from '../../helpers';
 import ContactCard from '../../components/ContactCard';
 import FabButton from '../../components/FabButton';
 import { styles } from './styles';
@@ -20,7 +20,8 @@ const ContactList = (props: TContactList) => {
   const loadContacts = () => {
     Contacts.getAll()
       .then(contacts => {
-        setContactList(contacts);
+        let sortedContact = sortByGivenName(contacts);
+        setContactList(sortedContact);
         Snackbar.show({
           text: `Successfully loaded ${contacts.length} contacts 💯`,
           duration: Snackbar.LENGTH_SHORT,
