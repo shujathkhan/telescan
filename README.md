@@ -33,3 +33,5 @@
 - One of the major challenges was the permission requests, for both ios and android react native provides different syntax and levels of permissions, `react-native-permissions` played a key role, in quick prototyping it. 
 - Another challenge, would be the `react-native-contacts` API functions, are not properly strongly typed in terms of their Promise response, workarounds are available, but I prefer it to be strongly typed in a correct manner. eg: `addContact` promise should resolve with a *Contact* object instead of *void*.
 - Currently, I am facing amajor road block with the `react-native-contacts` package in terms of updating the photo of a contact. For some reason while consuming, the `writePhotoToPath` command keeps throwing a File Not Found Exception. I am currently digging into this issue.
+
+Developed with 💖 using react-native.
