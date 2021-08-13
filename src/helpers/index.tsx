@@ -2,7 +2,12 @@ import { Platform } from 'react-native';
 import { Contact } from 'react-native-contacts';
 import { Permission, PERMISSIONS, requestMultiple, RESULTS } from 'react-native-permissions';
 
-export const getInitials = (name: string) => {
+/**
+ * @description Function to get initals from a name
+ * @param {string} name
+ * @returns {string | string[]}
+ */
+export const getInitials = (name: string): string | string[] => {
   let initials: string | Array<string> = name.split(' ');
   if (initials.length > 1) {
     initials = initials[0][0].toUpperCase() + initials[initials.length - 1][0].toUpperCase();
@@ -12,11 +17,21 @@ export const getInitials = (name: string) => {
   return initials;
 };
 
+/**
+ * @description function to wait for X milliseconds
+ * @param {number} timeout
+ * @returns {Promise}
+ */
 export const wait = (timeout: number) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 };
 
-export const requestPermissions = async (permissions: Array<Permission>) => {
+/**
+ * @description Function to request permission using react-native-permissions API
+ * @param {Array<Permission>} permissions
+ * @returns {Promise<boolean>}
+ */
+export const requestPermissions = async (permissions: Array<Permission>): Promise<boolean> => {
   let isPermissionGranted = false;
   const statuses = await requestMultiple(permissions);
   for (let index in permissions) {
@@ -30,7 +45,12 @@ export const requestPermissions = async (permissions: Array<Permission>) => {
   return isPermissionGranted;
 };
 
-export const sortByGivenName = (contactList: Array<Contact>) =>
+/**
+ * @description Sort an array of contacts by given name
+ * @param {Array<Contact>} contactList
+ * @returns {Array<Contact>}
+ */
+export const sortByGivenName = (contactList: Array<Contact>): Array<Contact> =>
   contactList
     .slice()
     .sort((a, b) =>

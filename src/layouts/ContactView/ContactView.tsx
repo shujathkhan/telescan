@@ -12,12 +12,18 @@ import FabButton from '../../components/FabButton';
 import { getInitials } from '../../helpers';
 import { styles } from './styles';
 import MultiForm from '../../components/MultiForm';
+import { THandleChangeText } from '../../components/MultiForm/MultiForm';
 
 type TContactView = {
-  route: RouteProp<RootStackParamList, 'View/Edit Contact'>;
+  route: RouteProp<RootStackParamList, 'ContactView'>;
   navigation: NativeStackNavigationHelpers;
 };
 
+/**
+ * @description View/Edit Contact screen component
+ * @param {TContactView} props
+ * @returns {JSX.Element}
+ */
 const ContactView = (props: TContactView) => {
   let { contactId } = props.route.params;
   const [contact, setContact] = useState<Contact | any>();
@@ -30,19 +36,28 @@ const ContactView = (props: TContactView) => {
       });
   }, [contactId]);
 
-  const handleChangeText = (value: string, type: string, index: number = -1, key?: string) => {
+  /**
+   * @description Single onChange for picker and text input
+   * @param {THandleChangeText} props
+   * @returns {void}
+   */
+  const handleChangeText = (args: THandleChangeText): void => {
     if (contact) {
       let contactClone: Contact | any = cloneDeep(contact);
-      if (key && index !== -1) {
-        contactClone[type][index][key] = value;
+      if (args.key && args.index !== -1) {
+        contactClone[args.type][args.index][args.key] = args.value;
       } else {
-        contactClone[type] = value;
+        contactClone[args.type] = args.value;
       }
-
       setContact(contactClone);
     }
   };
 
+  /**
+   * @description function to call updateContact api
+   * @param {Contact} contactToUpdate
+   * @returns {void}
+   */
   const updateContact = (contactToUpdate: Contact) => {
     Contacts.updateContact(contactToUpdate)
       .then(responseContact => {
@@ -58,16 +73,15 @@ const ContactView = (props: TContactView) => {
           textColor: 'white',
         });
       });
-
-    // Contacts.writePhotoToPath(contactToUpdate.recordID, '../../assets/add.png')
-    //   .then(data => console.log(data))
-    //   .catch(err => console.error(err));
   };
 
+  /**
+   * @description function to handle fab button press event
+   * @returns {void}
+   */
   const handleFabButtonPress = async () => {
     setEditMode(!editMode);
     if (editMode && contact) {
-      console.log(contact);
       updateContact(contact);
       Snackbar.show({
         text: 'Successfully updated contacts ✔️',
@@ -78,6 +92,10 @@ const ContactView = (props: TContactView) => {
     }
   };
 
+  /**
+   * @description Function to open image picker using gallery
+   * @returns {void}
+   */
   const chooseImage = () => {
     launchImageLibrary(
       {

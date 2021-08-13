@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { getInitials } from '../../helpers';
 import { styles } from './styles';
@@ -9,9 +9,19 @@ type TContactCard = {
   onPress?: () => void;
 };
 
-const ContactCard = (props: TContactCard) => {
+/**
+ * @description Contact card component
+ * @param {TContactCard} props
+ * @returns {FC<TContactCard>}
+ */
+const ContactCard: FC<TContactCard> = (props: TContactCard) => {
   const { name, onPress, nameIconPath } = props;
-  const handlePress = () => {
+
+  /**
+   * @description Function to handle press event
+   * @returns {void}
+   */
+  const handlePress = (): void => {
     onPress && onPress();
   };
 

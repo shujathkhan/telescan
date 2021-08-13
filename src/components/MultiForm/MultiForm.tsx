@@ -9,12 +9,30 @@ import { Contact, EmailAddress, PhoneNumber } from 'react-native-contacts';
 export const newPhoneNumber: PhoneNumber = { label: 'home', number: '' };
 export const newEmailAddress: EmailAddress = { label: 'home', email: '' };
 
-const MultiForm = (props: {
+export type THandleChangeText = {
+  value: string | number;
+  type: string;
+  index: number;
+  key?: string;
+};
+
+type TMultiForm = {
   contact: Contact | Partial<Contact>;
   setContact: React.Dispatch<Contact | any>;
   type: 'phoneNumbers' | 'emailAddresses' | 'displayName';
-  handleChangeText: any;
-}) => {
+  handleChangeText: (args: THandleChangeText) => void;
+};
+
+const MultiForm = (props: TMultiForm) => {
+  const onChangeValue = (args: THandleChangeText) => {
+    props.handleChangeText && props.handleChangeText(args);
+  };
+
+  /**
+   * @description Switch case to handle custom form elements
+   * @param {'phoneNumbers' | 'emailAddresses' | 'displayName'} props.type
+   * @returns {JSX.Element}
+   */
   switch (props.type) {
     case 'phoneNumbers':
       return (
@@ -25,7 +43,7 @@ const MultiForm = (props: {
             </View>
             <Text style={styles.detailsTextLabel}>Phone Numbers</Text>
           </View>
-          {props.contact?.phoneNumbers?.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
+          {props?.contact?.phoneNumbers?.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
             return (
               <View style={[styles.detailsView, styles.itemContainer]} key={`phoneNumber-${props.contact.recordID}-index-${phoneIndex}`}>
                 <Picker
@@ -33,7 +51,9 @@ const MultiForm = (props: {
                   style={styles.pickerContainer}
                   dropdownIconColor={'black'}
                   mode={'dropdown'}
-                  onValueChange={(itemValue: ItemValue) => props.handleChangeText(itemValue, 'phoneNumbers', phoneIndex, 'label')}>
+                  onValueChange={(itemValue: ItemValue) =>
+                    onChangeValue({ value: itemValue, type: 'phoneNumbers', index: phoneIndex, key: 'label' })
+                  }>
                   <Picker.Item label="Home" value="home" style={styles.pickerItem} />
                   <Picker.Item label="Mobile" value="mobile" style={styles.pickerItem} />
                   <Picker.Item label="Work" value="work" style={styles.pickerItem} />
@@ -42,7 +62,7 @@ const MultiForm = (props: {
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                   <TextInput
                     style={[styles.detailsTextInput, styles.customTextInput]}
-                    onChangeText={value => props.handleChangeText(value, 'phoneNumbers', phoneIndex, 'number')}
+                    onChangeText={value => onChangeValue({ value, type: 'phoneNumbers', index: phoneIndex, key: 'number' })}
                     value={phoneNumber.number}
                     keyboardType="numeric"
                     placeholder="Enter Phone Number"
@@ -91,7 +111,7 @@ const MultiForm = (props: {
                   style={styles.pickerContainer}
                   mode={'dropdown'}
                   dropdownIconColor={'black'}
-                  onValueChange={(itemValue: ItemValue) => props.handleChangeText(itemValue, 'emailAddresses', emailIndex, 'label')}>
+                  onValueChange={(value: ItemValue) => onChangeValue({ value, type: 'emailAddresses', index: emailIndex, key: 'label' })}>
                   <Picker.Item label="Home" value="home" style={styles.pickerItem} />
                   <Picker.Item label="Work" value="work" style={styles.pickerItem} />
                   <Picker.Item label="Other" value="other" style={styles.pickerItem} />
@@ -99,7 +119,7 @@ const MultiForm = (props: {
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                   <TextInput
                     style={[styles.detailsTextInput, styles.customTextInput]}
-                    onChangeText={value => props.handleChangeText(value, 'emailAddresses', emailIndex, 'email')}
+                    onChangeText={value => onChangeValue({ value, type: 'emailAddresses', index: emailIndex, key: 'email' })}
                     value={emailAddress.email}
                     keyboardType="email-address"
                     placeholder="Enter Email ID"
@@ -144,7 +164,7 @@ const MultiForm = (props: {
               <TextInput
                 style={styles.detailsTextInput}
                 value={props.contact.givenName}
-                onChangeText={value => props.handleChangeText(value, 'givenName')}
+                onChangeText={value => onChangeValue({ value, type: 'givenName', index: -1 })}
               />
             </View>
           </View>
@@ -158,7 +178,7 @@ const MultiForm = (props: {
               <TextInput
                 style={styles.detailsTextInput}
                 value={props.contact.familyName}
-                onChangeText={value => props.handleChangeText(value, 'familyName')}
+                onChangeText={value => onChangeValue({ value, type: 'familyName', index: -1 })}
               />
             </View>
           </View>

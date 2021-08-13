@@ -1,6 +1,6 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React, { useState } from 'react';
-import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity, ListRenderItem } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
 import { contactPermissions, requestPermissions, sortByGivenName, wait } from '../../helpers';
@@ -14,10 +14,21 @@ type TContactList = {
   navigation: NativeStackNavigationHelpers;
 };
 
+type TFlatListItem = { item: Contact; index: number };
+
+/**
+ * @description All Contacts screen component
+ * @param {TContactList} props
+ * @returns {any}
+ */
 const ContactList = (props: TContactList) => {
   const [contactList, setContactList] = useState<Array<Contact>>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  /**
+   * @description Function to call getAll API
+   * @returns {void}
+   */
   const loadContacts = () => {
     Contacts.getAll()
       .then(contacts => {
@@ -42,6 +53,10 @@ const ContactList = (props: TContactList) => {
       });
   };
 
+  /**
+   * @description Function to request access permissions
+   * @returns {void}
+   */
   const handleRequestAccess = async () => {
     const isPermissionGranted = await requestPermissions(contactPermissions);
     if (isPermissionGranted) {
@@ -57,7 +72,12 @@ const ContactList = (props: TContactList) => {
     }
   };
 
-  const handleDelete = (childProps: { item: Contact; index: number }) => {
+  /**
+   * @description Function to handle delete button press event
+   * @param {TFlatListItem} childProps
+   * @returns {void}
+   */
+  const handleDelete = (childProps: TFlatListItem) => {
     const contactName = childProps.item.displayName;
     Contacts.deleteContact(childProps.item)
       .then(() => {
@@ -80,7 +100,16 @@ const ContactList = (props: TContactList) => {
       });
   };
 
-  const contactItem = (childProps: { item: Contact; index: number }) => {
+  /**
+   * @description List item component to be passed to Flat List
+   * @param {TFlatListItem} childProps
+   * @returns {ListRenderItem<Contact>}
+   */
+  const contactItem: ListRenderItem<Contact> = (childProps: TFlatListItem) => {
+    /**
+     * @description Render on swipe right delete button
+     * @returns {JSX.Element}
+     */
     const handleRightSwipe = () => (
       <TouchableOpacity style={styles.deleteView} activeOpacity={0.75} onPress={() => handleDelete(childProps)}>
         <Text style={styles.deleteText}>Delete</Text>
@@ -93,8 +122,10 @@ const ContactList = (props: TContactList) => {
           name={childProps.item.displayName}
           nameIconPath={childProps.item.thumbnailPath}
           onPress={() =>
-            props.navigation.navigate('View/Edit Contact', {
+            props.navigation.navigate('ContactView', {
               contactId: childProps.item.recordID,
+              contactList,
+              setContactList,
             })
           }
           key={childProps.item.recordID}
@@ -103,7 +134,12 @@ const ContactList = (props: TContactList) => {
     ) : null;
   };
 
-  const onRefresh = React.useCallback(() => {
+  /**
+   * @description onRefresh function passed to FlatList
+   * @param {any} (
+   * @returns {React.EffectCallback}
+   */
+  const onRefresh: React.EffectCallback = React.useCallback(() => {
     setRefreshing(true);
     loadContacts();
     wait(250).then(() => setRefreshing(false));
@@ -119,7 +155,7 @@ const ContactList = (props: TContactList) => {
         <FabButton
           type="add"
           onPress={() => {
-            props.navigation.navigate('Add New Contact');
+            props.navigation.navigate('NewContact');
           }}
         />
       </View>

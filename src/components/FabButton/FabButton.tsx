@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Image, Text, TouchableOpacity } from 'react-native';
 import { styles } from './style';
 
@@ -8,9 +8,18 @@ type TFabButton = {
   isActive?: boolean;
 };
 
-const FabButton = (props: TFabButton) => {
+/**
+ * @description Fab Button component for add, edit and save
+ * @param {TFabButton} props
+ * @returns {FC<TFabButton>}
+ */
+const FabButton: FC<TFabButton> = (props: TFabButton) => {
   const { onPress, isActive, type } = props;
 
+  /**
+   * @description Function to handle press event
+   * @returns {void}
+   */
   const handlePress = () => {
     onPress && onPress();
   };

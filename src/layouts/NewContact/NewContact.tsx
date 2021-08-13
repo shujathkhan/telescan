@@ -7,12 +7,17 @@ import Snackbar from 'react-native-snackbar';
 import FabButton from '../../components/FabButton';
 import { contactPermissions, requestPermissions } from '../../helpers';
 import { styles } from './styles';
-import MultiForm, { newEmailAddress, newPhoneNumber } from '../../components/MultiForm/MultiForm';
+import MultiForm, { newEmailAddress, newPhoneNumber, THandleChangeText } from '../../components/MultiForm/MultiForm';
 
 type TNewContact = {
   navigation: NativeStackNavigationHelpers;
 };
 
+/**
+ * @description New Contact screen component
+ * @param {TNewContact} props
+ * @returns {JSX.Element}
+ */
 const NewContact = (props: TNewContact) => {
   const newContact = {
     emailAddresses: [newEmailAddress],
@@ -22,24 +27,33 @@ const NewContact = (props: TNewContact) => {
   };
   const [contact, setContact] = useState<Partial<Contact>>(newContact);
 
-  const handleChangeText = (value: string | number, type: string, index: number = -1, key?: string) => {
+  /**
+   * @description Single onChange for picker and text input
+   * @param {THandleChangeText} props
+   * @returns {void}
+   */
+  const handleChangeText = (args: THandleChangeText): void => {
     if (contact) {
       let contactClone: Contact | any = cloneDeep(contact);
-      if (key && index !== -1) {
-        contactClone[type][index][key] = value;
+      if (args.key && args.index !== -1) {
+        contactClone[args.type][args.index][args.key] = args.value;
       } else {
-        contactClone[type] = value;
+        contactClone[args.type] = args.value;
       }
       setContact(contactClone);
     }
   };
 
+  /**
+   * @description Function handle save fab button press event
+   * @returns {void}
+   */
   const handleFabButtonPress = async () => {
     const isPermissionGranted = await requestPermissions(contactPermissions);
     if (isPermissionGranted) {
       Contacts.addContact(contact as Contact)
         .then((addedContact: any) => {
-          props.navigation.navigate('All Contacts');
+          props.navigation.navigate('ContactList');
           Snackbar.show({
             text: `Successfully added ${addedContact.displayName} contact.`,
             duration: Snackbar.LENGTH_SHORT,
@@ -57,8 +71,7 @@ const NewContact = (props: TNewContact) => {
           });
         });
     } else {
-      setContact(newContact);
-      props.navigation.navigate('All Contacts');
+      props.navigation.navigate('ContactList');
       Snackbar.show({
         text: 'Well, feel free to explore 👍',
         duration: Snackbar.LENGTH_SHORT,
@@ -75,7 +88,7 @@ const NewContact = (props: TNewContact) => {
         <MultiForm type="phoneNumbers" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
         <MultiForm type="emailAddresses" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
       </ScrollView>
-      <View style={styles.fabView} accessibilityLabel="Save contact" accessibilityHint="Navigates to list all contacts screen">
+      <View style={styles.fabView} accessibilityLabel="Save contact" accessibilityHint="Navigates to list All Contacts screen">
         <FabButton type="save" onPress={handleFabButtonPress} />
       </View>
     </SafeAreaView>
