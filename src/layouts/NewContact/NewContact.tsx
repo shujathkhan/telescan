@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
-import { View, SafeAreaView, Text, TextInput, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
 import cloneDeep from 'lodash.clonedeep';
-import Contacts, { Contact, EmailAddress, PhoneNumber } from 'react-native-contacts';
+import Contacts, { Contact } from 'react-native-contacts';
 import Snackbar from 'react-native-snackbar';
 import FabButton from '../../components/FabButton';
 import { contactPermissions, requestPermissions } from '../../helpers';
-import { styles as contactViewStyles } from '../ContactView/styles';
 import { styles } from './styles';
-import { Picker } from '@react-native-picker/picker';
-import { ItemValue } from '@react-native-picker/picker/typings/Picker';
+import MultiForm, { newEmailAddress, newPhoneNumber } from '../../components/MultiForm/MultiForm';
 
 type TNewContact = {
   navigation: NativeStackNavigationHelpers;
 };
 
 const NewContact = (props: TNewContact) => {
-  const newPhoneNumber = { label: 'home', number: '' };
-  const newEmailAddress = { label: 'home', email: '' };
   const newContact = {
     emailAddresses: [newEmailAddress],
     phoneNumbers: [newPhoneNumber],
@@ -75,145 +71,11 @@ const NewContact = (props: TNewContact) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={contactViewStyles.emojiContainer}>
-          <View style={contactViewStyles.emoji}>
-            <Text style={contactViewStyles.detailsTextLabel}>😀</Text>
-          </View>
-          <View style={contactViewStyles.detailsView}>
-            <Text style={contactViewStyles.detailsTextLabel}>Given name</Text>
-            <TextInput
-              style={contactViewStyles.detailsTextInput}
-              value={contact.givenName}
-              onChangeText={value => handleChangeText(value, 'givenName')}
-            />
-          </View>
-        </View>
-
-        <View style={contactViewStyles.emojiContainer}>
-          <View style={contactViewStyles.emoji}>
-            <Text style={contactViewStyles.detailsTextLabel}>😀</Text>
-          </View>
-          <View style={contactViewStyles.detailsView}>
-            <Text style={contactViewStyles.detailsTextLabel}>Family name</Text>
-            <TextInput
-              style={contactViewStyles.detailsTextInput}
-              value={contact.familyName}
-              onChangeText={value => handleChangeText(value, 'familyName')}
-            />
-          </View>
-        </View>
-
-        <View style={styles.groupContainer}>
-          <View style={contactViewStyles.emojiContainer}>
-            <View style={contactViewStyles.emoji}>
-              <Text style={contactViewStyles.detailsTextLabel}>📞</Text>
-            </View>
-            <Text style={contactViewStyles.detailsTextLabel}>Phone Numbers</Text>
-          </View>
-          {contact?.phoneNumbers?.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
-            return (
-              <View
-                style={[contactViewStyles.detailsView, styles.itemContainer]}
-                key={`phoneNumber-${contact.recordID}-index-${phoneIndex}`}>
-                <Picker
-                  selectedValue={phoneNumber.label}
-                  style={styles.pickerContainer}
-                  dropdownIconColor={'black'}
-                  mode={'dropdown'}
-                  onValueChange={(itemValue: ItemValue) => handleChangeText(itemValue, 'phoneNumbers', phoneIndex, 'label')}>
-                  <Picker.Item label="Home" value="home" style={styles.pickerItem} />
-                  <Picker.Item label="Mobile" value="mobile" style={styles.pickerItem} />
-                  <Picker.Item label="Work" value="work" style={styles.pickerItem} />
-                  <Picker.Item label="Other" value="other" style={styles.pickerItem} />
-                </Picker>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-                  <TextInput
-                    style={[contactViewStyles.detailsTextInput, styles.customTextInput]}
-                    onChangeText={value => handleChangeText(value, 'phoneNumbers', phoneIndex, 'number')}
-                    value={phoneNumber.number}
-                    keyboardType="numeric"
-                    placeholder="Enter Phone Number"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
-                <TouchableOpacity
-                  activeOpacity={0.75}
-                  onPress={() => {
-                    let contactClone = cloneDeep(contact);
-                    contactClone.phoneNumbers?.splice(phoneIndex, 1);
-                    setContact(contactClone);
-                  }}>
-                  <Text>❌</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-          <TouchableOpacity
-            activeOpacity={0.75}
-            onPress={() => {
-              let contactClone = cloneDeep(contact);
-              contactClone.phoneNumbers?.push(newPhoneNumber);
-              setContact(contactClone);
-            }}>
-            <Text>➕Add New Phone Number</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.groupContainer}>
-          <View style={contactViewStyles.emojiContainer}>
-            <View style={contactViewStyles.emoji}>
-              <Text style={contactViewStyles.detailsTextLabel}>✉️</Text>
-            </View>
-            <Text style={contactViewStyles.detailsTextLabel}>Email Addresses</Text>
-          </View>
-          {contact?.emailAddresses?.map((emailAddress: EmailAddress, emailIndex: number) => {
-            return (
-              <View
-                style={[contactViewStyles.detailsView, styles.itemContainer]}
-                key={`emailAddress-${contact.recordID}-index-${emailIndex}`}>
-                <Picker
-                  selectedValue={emailAddress.label}
-                  style={styles.pickerContainer}
-                  mode={'dropdown'}
-                  dropdownIconColor={'black'}
-                  onValueChange={(itemValue: ItemValue) => handleChangeText(itemValue, 'emailAddresses', emailIndex, 'label')}>
-                  <Picker.Item label="Home" value="home" style={styles.pickerItem} />
-                  <Picker.Item label="Work" value="work" style={styles.pickerItem} />
-                  <Picker.Item label="Other" value="other" style={styles.pickerItem} />
-                </Picker>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-                  <TextInput
-                    style={[contactViewStyles.detailsTextInput, styles.customTextInput]}
-                    onChangeText={value => handleChangeText(value, 'emailAddresses', emailIndex, 'email')}
-                    value={emailAddress.email}
-                    keyboardType="email-address"
-                    placeholder="Enter Email ID"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
-                <TouchableOpacity
-                  activeOpacity={0.75}
-                  onPress={() => {
-                    let contactClone = cloneDeep(contact);
-                    contactClone.emailAddresses?.splice(emailIndex, 1);
-                    setContact(contactClone);
-                  }}>
-                  <Text>❌</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-          <TouchableOpacity
-            activeOpacity={0.75}
-            onPress={() => {
-              let contactClone = cloneDeep(contact);
-              contactClone.emailAddresses?.push(newEmailAddress);
-              setContact(contactClone);
-            }}>
-            <Text>➕Add New Email Address</Text>
-          </TouchableOpacity>
-        </View>
+        <MultiForm type="displayName" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
+        <MultiForm type="phoneNumbers" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
+        <MultiForm type="emailAddresses" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
       </ScrollView>
-      <View style={[contactViewStyles.fabView, styles.customFabView]}>
+      <View style={styles.fabView} accessibilityLabel="Save contact" accessibilityHint="Navigates to list all contacts screen">
         <FabButton type="save" onPress={handleFabButtonPress} />
       </View>
     </SafeAreaView>

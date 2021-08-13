@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   fallbackStatusText: {
     fontSize: 15,
   },
-  fallbackStatusTextView: { marginVertical: 20 },
+  fallbackStatusTextView: { marginVertical: 20, justifyContent: 'center', alignItems: 'center' },
   infoContainer: {
     padding: 10,
     flexDirection: 'row',
@@ -42,10 +42,9 @@ export const styles = StyleSheet.create({
   },
   fabView: {
     position: 'absolute',
-    bottom: '7%',
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    bottom: '10%',
+    right: '5%',
+    zIndex: 999,
   },
   deleteView: {
     backgroundColor: 'red',
@@ -61,5 +60,10 @@ export const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: '600',
+  },
+  syncText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: 'blue',
   },
 });

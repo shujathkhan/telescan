@@ -1,5 +1,5 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
@@ -42,23 +42,20 @@ const ContactList = (props: TContactList) => {
       });
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const isPermissionGranted = await requestPermissions(contactPermissions);
-      if (isPermissionGranted) {
-        loadContacts();
-      } else {
-        setContactList([]);
-        Snackbar.show({
-          text: 'Well, feel free to explore 👍',
-          duration: Snackbar.LENGTH_SHORT,
-          backgroundColor: '#185ADB',
-          textColor: 'white',
-        });
-      }
+  const handleRequestAccess = async () => {
+    const isPermissionGranted = await requestPermissions(contactPermissions);
+    if (isPermissionGranted) {
+      loadContacts();
+    } else {
+      setContactList([]);
+      Snackbar.show({
+        text: 'Well, feel free to explore 👍',
+        duration: Snackbar.LENGTH_SHORT,
+        backgroundColor: '#185ADB',
+        textColor: 'white',
+      });
     }
-    fetchData();
-  }, []);
+  };
 
   const handleDelete = (childProps: { item: Contact; index: number }) => {
     const contactName = childProps.item.displayName;
@@ -118,7 +115,7 @@ const ContactList = (props: TContactList) => {
         <Text style={styles.infoText}>Showing {contactList.length} contacts</Text>
       </View>
 
-      <View style={styles.fabView}>
+      <View style={styles.fabView} accessibilityLabel="Add new contact" accessible accessibilityHint="Navigates to new contact screen">
         <FabButton
           type="add"
           onPress={() => {
@@ -139,6 +136,9 @@ const ContactList = (props: TContactList) => {
           <Image source={require('../../assets/blank.png')} />
           <View style={styles.fallbackStatusTextView}>
             <Text style={styles.fallbackStatusText}>No contacts to display</Text>
+            <TouchableOpacity activeOpacity={0.75} onPress={handleRequestAccess}>
+              <Text style={styles.syncText}>Sync device contacts</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}

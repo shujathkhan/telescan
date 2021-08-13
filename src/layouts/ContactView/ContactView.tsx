@@ -1,15 +1,17 @@
 import { RouteProp } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Contacts, { Contact, EmailAddress, PhoneNumber } from 'react-native-contacts';
+import Snackbar from 'react-native-snackbar';
+import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
+import { launchImageLibrary } from 'react-native-image-picker';
+import cloneDeep from 'lodash.clonedeep';
+
 import { RootStackParamList } from '../../../App';
 import FabButton from '../../components/FabButton';
 import { getInitials } from '../../helpers';
 import { styles } from './styles';
-import cloneDeep from 'lodash.clonedeep';
-import Snackbar from 'react-native-snackbar';
-import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
-import { launchImageLibrary } from 'react-native-image-picker';
+import MultiForm from '../../components/MultiForm';
 
 type TContactView = {
   route: RouteProp<RootStackParamList, 'View/Edit Contact'>;
@@ -43,11 +45,9 @@ const ContactView = (props: TContactView) => {
 
   const updateContact = (contactToUpdate: Contact) => {
     Contacts.updateContact(contactToUpdate)
-      .then(data => {
+      .then(responseContact => {
         // record updated
-        const updatedContact: Contact | any = data;
-
-        setContact(updatedContact);
+        setContact(responseContact);
       })
       .catch(err => {
         console.error(err);
@@ -59,7 +59,7 @@ const ContactView = (props: TContactView) => {
         });
       });
 
-    // Contacts.writePhotoToPath(contactToUpdate.recordID, contactToUpdate.thumbnailPath)
+    // Contacts.writePhotoToPath(contactToUpdate.recordID, '../../assets/add.png')
     //   .then(data => console.log(data))
     //   .catch(err => console.error(err));
   };
@@ -132,133 +132,52 @@ const ContactView = (props: TContactView) => {
       )}
       <ScrollView style={styles.detailsContainer}>
         {!editMode ? (
-          <View style={styles.emojiContainer}>
-            <View style={styles.emoji}>
-              <Text style={styles.detailsTextLabel}>😀</Text>
-            </View>
-            <View style={styles.detailsView}>
-              <Text style={styles.detailsTextLabel}>Name</Text>
-              <Text style={styles.detailsTextValue}>{contact.displayName}</Text>
-            </View>
-          </View>
-        ) : (
           <>
             <View style={styles.emojiContainer}>
               <View style={styles.emoji}>
                 <Text style={styles.detailsTextLabel}>😀</Text>
               </View>
               <View style={styles.detailsView}>
-                <Text style={styles.detailsTextLabel}>Given name</Text>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-                  <TextInput
-                    key="giveName"
-                    style={styles.detailsTextInput}
-                    onChangeText={value => handleChangeText(value, 'givenName')}
-                    defaultValue={contact.givenName}
-                    placeholder="Enter Given Name"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
+                <Text style={styles.detailsTextLabel}>Name</Text>
+                <Text style={styles.detailsTextValue}>{contact.displayName}</Text>
               </View>
             </View>
-            <View style={styles.emojiContainer}>
-              <View style={styles.emoji}>
-                <Text style={styles.detailsTextLabel}>😀</Text>
-              </View>
-              <View style={styles.detailsView}>
-                <Text style={styles.detailsTextLabel}>Family name</Text>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-                  <TextInput
-                    key="familyName"
-                    style={styles.detailsTextInput}
-                    onChangeText={value => handleChangeText(value, 'familyName')}
-                    defaultValue={contact.familyName}
-                    placeholder="Enter Family Name"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
-              </View>
-            </View>
+            {contact.phoneNumbers.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
+              const label = phoneNumber.label.slice(0, 1).toUpperCase() + phoneNumber.label.slice(1);
+              return (
+                <View style={styles.emojiContainer} key={`phoneNumber-${phoneIndex}-emojiContainer`}>
+                  <View style={styles.emoji}>
+                    <Text style={styles.detailsTextLabel}>📞</Text>
+                  </View>
+                  <View style={styles.detailsView} key={`phoneNumber-${phoneIndex}`}>
+                    <Text style={styles.detailsTextLabel}>{label}</Text>
+                    <Text style={styles.detailsTextValue}>{phoneNumber.number}</Text>
+                  </View>
+                </View>
+              );
+            })}
+            {contact.emailAddresses.map((emailAddress: EmailAddress, emailIndex: number) => {
+              const label = emailAddress.label.slice(0, 1).toUpperCase() + emailAddress.label.slice(1);
+              return (
+                <View style={styles.emojiContainer} key={`emailAddress-${emailIndex}-emojiContainer`}>
+                  <View style={styles.emoji}>
+                    <Text style={styles.detailsTextLabel}>✉️</Text>
+                  </View>
+                  <View style={styles.detailsView} key={`emailAddress-${emailIndex}`}>
+                    <Text style={styles.detailsTextLabel}>{label}</Text>
+                    <Text style={styles.detailsTextValue}>{emailAddress.email}</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <MultiForm type="displayName" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
+            <MultiForm type="phoneNumbers" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
+            <MultiForm type="emailAddresses" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
           </>
         )}
-        {contact.phoneNumbers.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
-          const label = phoneNumber.label.slice(0, 1).toUpperCase() + phoneNumber.label.slice(1);
-          return !editMode ? (
-            <View style={styles.emojiContainer} key={`phoneNumber-${phoneIndex}-emojiContainer`}>
-              <View style={styles.emoji}>
-                <Text style={styles.detailsTextLabel}>📞</Text>
-              </View>
-              <View style={styles.detailsView} key={`phoneNumber-${phoneIndex}`}>
-                <Text style={styles.detailsTextLabel}>{label}</Text>
-                <Text style={styles.detailsTextValue}>{phoneNumber.number}</Text>
-              </View>
-            </View>
-          ) : (
-            <View style={styles.emojiContainer} key={`phoneNumber-${phoneIndex}-emojiContainer`}>
-              <View style={styles.emoji}>
-                <Text style={styles.detailsTextLabel}>📞</Text>
-              </View>
-              <View style={styles.detailsView} key={`phoneNumber-${phoneIndex}`}>
-                <Text style={styles.detailsTextLabel} key={`phoneNumber-${phoneIndex}-label`}>
-                  {label}
-                </Text>
-                <KeyboardAvoidingView
-                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                  style={styles.container}
-                  key={`phoneNumber-${phoneIndex}-keyboardView`}>
-                  <TextInput
-                    style={styles.detailsTextInput}
-                    key={`phoneNumber-${phoneIndex}-input`}
-                    onChangeText={value => handleChangeText(value, 'phoneNumbers', phoneIndex, 'number')}
-                    defaultValue={phoneNumber.number}
-                    keyboardType="numeric"
-                    placeholder="Enter Phone Number"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
-              </View>
-            </View>
-          );
-        })}
-        {contact.emailAddresses.map((emailAddress: EmailAddress, emailIndex: number) => {
-          const label = emailAddress.label.slice(0, 1).toUpperCase() + emailAddress.label.slice(1);
-          return !editMode ? (
-            <View style={styles.emojiContainer} key={`emailAddress-${emailIndex}-emojiContainer`}>
-              <View style={styles.emoji}>
-                <Text style={styles.detailsTextLabel}>✉️</Text>
-              </View>
-              <View style={styles.detailsView} key={`emailAddress-${emailIndex}`}>
-                <Text style={styles.detailsTextLabel}>{label}</Text>
-                <Text style={styles.detailsTextValue}>{emailAddress.email}</Text>
-              </View>
-            </View>
-          ) : (
-            <View style={styles.emojiContainer} key={`emailAddress-${emailIndex}-emojiContainer`}>
-              <View style={styles.emoji}>
-                <Text style={styles.detailsTextLabel}>✉️</Text>
-              </View>
-              <View style={styles.detailsView} key={`emailAddress-${emailIndex}`}>
-                <Text style={styles.detailsTextLabel} key={`emailAddress-${emailIndex}-label`}>
-                  {label}
-                </Text>
-                <KeyboardAvoidingView
-                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                  style={styles.container}
-                  key={`emailAddress-${emailIndex}-keyboardView`}>
-                  <TextInput
-                    style={styles.detailsTextInput}
-                    key={`emailAddress-${emailIndex}-input`}
-                    onChangeText={value => handleChangeText(value, 'emailAddresses', emailIndex, 'email')}
-                    defaultValue={emailAddress.email}
-                    keyboardType="email-address"
-                    placeholder="Enter Email ID"
-                    placeholderTextColor="grey"
-                  />
-                </KeyboardAvoidingView>
-              </View>
-            </View>
-          );
-        })}
       </ScrollView>
       <View style={styles.fabView}>
         <FabButton type="edit" onPress={handleFabButtonPress} isActive={editMode} />

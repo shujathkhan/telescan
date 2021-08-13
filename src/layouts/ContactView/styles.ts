@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 30,
     backgroundColor: '#FFFBDF',
+    width: '100%',
   },
   nameIcon: {
     width: 150,
@@ -47,10 +48,8 @@ export const styles = StyleSheet.create({
   },
   fabView: {
     position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    bottom: '4%',
+    right: '5%',
   },
   editPhotoContainer: {
     flexDirection: 'column',

@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 25,
     zIndex: 999,
     borderWidth: 2,
   },

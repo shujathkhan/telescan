@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: '7.5%',
     backgroundColor: '#FFFBDF',
-    width: '100%',
   },
   groupContainer: {
     flex: 1,
@@ -26,7 +25,10 @@ export const styles = StyleSheet.create({
   },
   pickerItem: { backgroundColor: '#FFFBDF', color: 'black' },
   customTextInput: { width: '120%', borderBottomWidth: 0.75, marginTop: -40, marginStart: -25 },
-  customFabView: {
-    right: '0%',
+
+  fabView: {
+    position: 'absolute',
+    bottom: '4%',
+    right: '5%',
   },
 });

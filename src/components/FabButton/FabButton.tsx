@@ -16,7 +16,7 @@ const FabButton = (props: TFabButton) => {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.75} style={styles.fabButton} onPress={handlePress}>
+    <TouchableOpacity activeOpacity={0.75} style={styles.fabButton} onPress={handlePress} accessibilityRole="button">
       {type === 'edit' ? (
         isActive ? (
           <Text style={styles.fabText}>💾</Text>
