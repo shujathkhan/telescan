@@ -124,8 +124,6 @@ const ContactList = (props: TContactList) => {
           onPress={() =>
             props.navigation.navigate('ContactView', {
               contactId: childProps.item.recordID,
-              contactList,
-              setContactList,
             })
           }
           key={childProps.item.recordID}
@@ -151,22 +149,25 @@ const ContactList = (props: TContactList) => {
         <Text style={styles.infoText}>Showing {contactList.length} contacts</Text>
       </View>
 
-      <View style={styles.fabView} accessibilityLabel="Add new contact" accessible accessibilityHint="Navigates to new contact screen">
-        <FabButton
-          type="add"
-          onPress={() => {
-            props.navigation.navigate('NewContact');
-          }}
-        />
-      </View>
       {contactList.length ? (
-        <FlatList
-          data={contactList}
-          renderItem={contactItem}
-          initialNumToRender={10}
-          keyExtractor={item => item.recordID}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        />
+        <>
+          <FlatList
+            data={contactList}
+            renderItem={contactItem}
+            initialNumToRender={10}
+            keyExtractor={item => item.recordID}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          />
+
+          <View style={styles.fabView} accessibilityLabel="Add new contact" accessible accessibilityHint="Navigates to new contact screen">
+            <FabButton
+              type="add"
+              onPress={() => {
+                props.navigation.navigate('NewContact');
+              }}
+            />
+          </View>
+        </>
       ) : (
         <View style={styles.fallbackStatusView}>
           <Image source={require('../../assets/blank.png')} />
