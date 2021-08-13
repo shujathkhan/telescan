@@ -7,4 +7,6 @@ module.exports = {
   singleQuote: true,
   arrowParens: 'avoid',
   printWidth: 140,
+  parser: 'typescript',
+  endOfLine: 'auto',
 };
