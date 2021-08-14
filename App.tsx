@@ -10,7 +10,7 @@ export type RootStackParamList = {
   ContactList: undefined;
   NewContact: undefined;
   ContactView: {
-    contactId: string;
+    contactId?: string;
   };
 };
 

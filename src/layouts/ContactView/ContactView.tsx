@@ -30,9 +30,10 @@ const ContactView = (props: TContactView) => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    Contacts.getContactById(contactId).then((contactResponse: Contact) => {
-      setContact(contactResponse);
-    });
+    contactId &&
+      Contacts.getContactById(contactId).then((contactResponse: Contact) => {
+        setContact(contactResponse);
+      });
   }, [contactId]);
 
   /**
