@@ -1,5 +1,5 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity, ListRenderItem } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
@@ -11,7 +11,7 @@ import Snackbar from 'react-native-snackbar';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 type TContactList = {
-  navigation: NativeStackNavigationHelpers;
+  navigation: NativeStackNavigationHelpers | any;
 };
 
 type TFlatListItem = { item: Contact; index: number };
@@ -71,6 +71,11 @@ const ContactList = (props: TContactList) => {
       });
     }
   };
+
+  useEffect(() => {
+    handleRequestAccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * @description Function to handle delete button press event
@@ -152,6 +157,7 @@ const ContactList = (props: TContactList) => {
       {contactList.length ? (
         <>
           <FlatList
+            testID="flat-list"
             data={contactList}
             renderItem={contactItem}
             initialNumToRender={10}
@@ -159,7 +165,12 @@ const ContactList = (props: TContactList) => {
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           />
 
-          <View style={styles.fabView} accessibilityLabel="Add new contact" accessible accessibilityHint="Navigates to new contact screen">
+          <View
+            style={styles.fabView}
+            accessibilityLabel="Add new contact"
+            testID="addButton"
+            accessible
+            accessibilityHint="Navigates to new contact screen">
             <FabButton
               type="add"
               onPress={() => {
@@ -173,7 +184,7 @@ const ContactList = (props: TContactList) => {
           <Image source={require('../../assets/blank.png')} />
           <View style={styles.fallbackStatusTextView}>
             <Text style={styles.fallbackStatusText}>No contacts to display</Text>
-            <TouchableOpacity activeOpacity={0.75} onPress={handleRequestAccess}>
+            <TouchableOpacity activeOpacity={0.75} onPress={handleRequestAccess} testID="syncContacts">
               <Text style={styles.syncText}>Sync device contacts</Text>
             </TouchableOpacity>
           </View>

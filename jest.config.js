@@ -1,4 +1,11 @@
-const transformIgnoreModules = ['react-native', 'react-native-permissions', '@react-native', '@react-native-picker/picker'];
+const transformIgnoreModules = [
+  'react-native',
+  'react-native-permissions',
+  '@react-native',
+  '@react-native-picker/picker',
+  '@react-native-community',
+  '@react-navigation',
+];
 
 module.exports = {
   preset: 'react-native',

@@ -15,8 +15,8 @@ import MultiForm from '../../components/MultiForm';
 import { THandleChangeText } from '../../components/MultiForm/MultiForm';
 
 type TContactView = {
-  route: RouteProp<RootStackParamList, 'ContactView'>;
-  navigation: NativeStackNavigationHelpers;
+  route: RouteProp<RootStackParamList, 'ContactView'> | any;
+  navigation: NativeStackNavigationHelpers | any;
 };
 
 /**
@@ -30,10 +30,9 @@ const ContactView = (props: TContactView) => {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
-    contactId &&
-      Contacts.getContactById(contactId).then((contactResponse: Contact) => {
-        setContact(contactResponse);
-      });
+    Contacts.getContactById(contactId).then((contactResponse: Contact) => {
+      setContact(contactResponse);
+    });
   }, [contactId]);
 
   /**

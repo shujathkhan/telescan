@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`All Contacts Screen should render ContactList screen 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  style={
+    Object {
+      "backgroundColor": "#FFFBDF",
+      "flexDirection": "column",
+      "flexGrow": 1,
+      "minHeight": 70,
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "white",
+        "elevation": 3,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 5,
+        "padding": 10,
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "fontSize": 15,
+        }
+      }
+    >
+      Showing 
+      0
+       contacts
+    </Text>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "process": [Function],
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginVertical": 20,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "fontSize": 15,
+          }
+        }
+      >
+        No contacts to display
+      </Text>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+        testID="syncContacts"
+      >
+        <Text
+          style={
+            Object {
+              "color": "blue",
+              "fontSize": 15,
+              "fontWeight": "700",
+            }
+          }
+        >
+          Sync device contacts
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;
