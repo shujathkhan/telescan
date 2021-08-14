@@ -83,7 +83,7 @@ const NewContact = (props: TNewContact) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.formContainer}>
         <MultiForm type="displayName" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
         <MultiForm type="phoneNumbers" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
         <MultiForm type="emailAddresses" contact={contact} setContact={setContact} handleChangeText={handleChangeText} />
