@@ -116,18 +116,19 @@ const MultiForm = (props: TMultiForm) => {
           {props.contact?.emailAddresses?.map((emailAddress: EmailAddress, emailIndex: number) => {
             return (
               <View style={[styles.detailsView, styles.itemContainer]} key={`emailAddress-${props.contact.recordID}-index-${emailIndex}`}>
-                <Picker
-                  ref={pickerRef}
-                  selectedValue={emailAddress.label}
-                  style={styles.pickerContainer}
-                  mode={'dropdown'}
-                  enabled={false}
-                  dropdownIconColor={'black'}
-                  onValueChange={(value: ItemValue) => onChangeValue({ value, type: 'emailAddresses', index: emailIndex, key: 'label' })}>
-                  <Picker.Item label="Home" value="home" style={styles.pickerItem} />
-                  <Picker.Item label="Work" value="work" style={styles.pickerItem} />
-                  <Picker.Item label="Other" value="other" style={styles.pickerItem} />
-                </Picker>
+                <TouchableOpacity activeOpacity={1} onPress={openPicker} style={styles.pickerContainer}>
+                  <Picker
+                    ref={pickerRef}
+                    selectedValue={emailAddress.label}
+                    mode={'dropdown'}
+                    enabled={false}
+                    dropdownIconColor={'black'}
+                    onValueChange={(value: ItemValue) => onChangeValue({ value, type: 'emailAddresses', index: emailIndex, key: 'label' })}>
+                    <Picker.Item label="Home" value="home" style={styles.pickerItem} />
+                    <Picker.Item label="Work" value="work" style={styles.pickerItem} />
+                    <Picker.Item label="Other" value="other" style={styles.pickerItem} />
+                  </Picker>
+                </TouchableOpacity>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                   <TextInput
                     style={[styles.detailsTextInput, styles.customTextInput]}
