@@ -117,9 +117,11 @@ const MultiForm = (props: TMultiForm) => {
             return (
               <View style={[styles.detailsView, styles.itemContainer]} key={`emailAddress-${props.contact.recordID}-index-${emailIndex}`}>
                 <Picker
+                  ref={pickerRef}
                   selectedValue={emailAddress.label}
                   style={styles.pickerContainer}
                   mode={'dropdown'}
+                  enabled={false}
                   dropdownIconColor={'black'}
                   onValueChange={(value: ItemValue) => onChangeValue({ value, type: 'emailAddresses', index: emailIndex, key: 'label' })}>
                   <Picker.Item label="Home" value="home" style={styles.pickerItem} />
