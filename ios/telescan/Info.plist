@@ -51,13 +51,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>NSCameraUsageDescription</key>
-  <string>This would help in capturing new photo for a contact</string>
   <key>NSContactsUsageDescription</key>
   <string>This would help in read and modify your in-device contacts</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>This would help in accessing your photos for a contact</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>This would help in adding a new photo for a contact</string>
 </dict>
 </plist>

@@ -18,7 +18,7 @@ export const getInitials = (name: string): string | string[] => {
 };
 
 /**
- * @description function to wait for X milliseconds
+ * @description Function to wait for X milliseconds
  * @param {number} timeout
  * @returns {Promise}
  */
@@ -58,17 +58,4 @@ export const sortByGivenName = (contactList: Array<Contact>): Array<Contact> =>
     );
 
 export const contactPermissions: Array<Permission> =
-  Platform.OS === 'ios'
-    ? [
-        // PERMISSIONS.IOS.CAMERA,
-        PERMISSIONS.IOS.CONTACTS,
-        // PERMISSIONS.IOS.PHOTO_LIBRARY,
-        // PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY
-      ]
-    : [
-        // PERMISSIONS.ANDROID.CAMERA,
-        PERMISSIONS.ANDROID.READ_CONTACTS,
-        PERMISSIONS.ANDROID.WRITE_CONTACTS,
-        // PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        // PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-      ];
+  Platform.OS === 'ios' ? [PERMISSIONS.IOS.CONTACTS] : [PERMISSIONS.ANDROID.READ_CONTACTS, PERMISSIONS.ANDROID.WRITE_CONTACTS];
