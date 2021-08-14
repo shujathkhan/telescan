@@ -23,10 +23,25 @@ It leverages <b>react-native-contacts</b> to sync and modify in-device contacts.
   </td>
 
   <td>
-  <img src="https://user-images.githubusercontent.com/13440061/129226225-c815e872-b44d-446a-a2ab-e39465ee45eb.gif" width="800" />
+  <img src="https://user-images.githubusercontent.com/13440061/129457159-84a49c25-813c-46e0-af5b-43ef684d0d57.gif" width="800" />
   </td>
 </tr>
 </table>
+
+## Setup
+
+### Pre-requisites
+- Android Studio ( with an AVD available preferably greater than Android 10 )
+- VScode or any IDE/text editor to view/edit source code
+- NodeJS >16.0.0
+- Git version control
+
+### Steps
+To run the application, please follow the below steps using a powershell or bash,
+- Clone the application, `git clone https://github.com/shujathkhan/TeleScan.git`
+- Move into its directory, `cd telescan`
+- Intall node_modules, `npm install`
+- Run the application for android, `npm run android`
 
 ## Architecture
 This app consists of the following folders in `src` ,
