@@ -5,6 +5,7 @@ import { ItemValue } from '@react-native-picker/picker/typings/Picker';
 import { View, Text, TextInput, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import cloneDeep from 'lodash.clonedeep';
 import { Contact, EmailAddress, PhoneNumber } from 'react-native-contacts';
+import { useRef } from 'react';
 
 export const newPhoneNumber: PhoneNumber = { label: 'home', number: '' };
 export const newEmailAddress: EmailAddress = { label: 'home', email: '' };
@@ -24,6 +25,12 @@ type TMultiForm = {
 };
 
 const MultiForm = (props: TMultiForm) => {
+  const pickerRef = useRef<any>();
+
+  const openPicker = () => {
+    pickerRef.current.focus();
+  };
+
   const onChangeValue = (args: THandleChangeText) => {
     props.handleChangeText && props.handleChangeText(args);
   };
@@ -46,19 +53,22 @@ const MultiForm = (props: TMultiForm) => {
           {props?.contact?.phoneNumbers?.map((phoneNumber: PhoneNumber, phoneIndex: number) => {
             return (
               <View style={[styles.detailsView, styles.itemContainer]} key={`phoneNumber-${props.contact.recordID}-index-${phoneIndex}`}>
-                <Picker
-                  selectedValue={phoneNumber.label}
-                  style={styles.pickerContainer}
-                  dropdownIconColor={'black'}
-                  mode={'dropdown'}
-                  onValueChange={(itemValue: ItemValue) =>
-                    onChangeValue({ value: itemValue, type: 'phoneNumbers', index: phoneIndex, key: 'label' })
-                  }>
-                  <Picker.Item label="Home" value="home" style={styles.pickerItem} />
-                  <Picker.Item label="Mobile" value="mobile" style={styles.pickerItem} />
-                  <Picker.Item label="Work" value="work" style={styles.pickerItem} />
-                  <Picker.Item label="Other" value="other" style={styles.pickerItem} />
-                </Picker>
+                <TouchableOpacity activeOpacity={1} onPress={openPicker} style={styles.pickerContainer}>
+                  <Picker
+                    ref={pickerRef}
+                    selectedValue={phoneNumber.label}
+                    dropdownIconColor={'black'}
+                    mode={'dropdown'}
+                    enabled={false}
+                    onValueChange={(itemValue: ItemValue) =>
+                      onChangeValue({ value: itemValue, type: 'phoneNumbers', index: phoneIndex, key: 'label' })
+                    }>
+                    <Picker.Item label="Home" value="home" style={styles.pickerItem} />
+                    <Picker.Item label="Mobile" value="mobile" style={styles.pickerItem} />
+                    <Picker.Item label="Work" value="work" style={styles.pickerItem} />
+                    <Picker.Item label="Other" value="other" style={styles.pickerItem} />
+                  </Picker>
+                </TouchableOpacity>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                   <TextInput
                     style={[styles.detailsTextInput, styles.customTextInput]}

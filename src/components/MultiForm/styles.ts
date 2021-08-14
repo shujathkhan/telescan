@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     marginLeft: '-2.5%',
     marginRight: '5%',
     height: 50,
-    width: '35%',
+    width: '45%',
   },
   pickerItem: { backgroundColor: '#FFFBDF', color: 'black' },
   customTextInput: { width: '100%', height: 50, borderBottomWidth: 0.75, marginTop: -40, paddingLeft: 0, marginStart: -25, fontSize: 15 },
