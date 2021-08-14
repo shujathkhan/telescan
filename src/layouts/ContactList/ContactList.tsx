@@ -1,5 +1,5 @@
 import { NativeStackNavigationHelpers } from '@react-navigation/native-stack/lib/typescript/src/types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, RefreshControl, Text, View, Image, SafeAreaView, TouchableOpacity, ListRenderItem } from 'react-native';
 import Contacts, { Contact } from 'react-native-contacts';
 
@@ -71,11 +71,6 @@ const ContactList = (props: TContactList) => {
       });
     }
   };
-
-  useEffect(() => {
-    handleRequestAccess();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /**
    * @description Function to handle delete button press event
